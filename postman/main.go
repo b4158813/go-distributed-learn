@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -8,15 +9,17 @@ import (
 )
 
 const (
-	LogRouter = "/log"
-	AppRouter = "/app"
+	RegistryRouter = "/services"
+	LogRouter      = "/log"
+	AppRouter      = "/app"
 )
 
-func SendPost(content, port, router string) error {
+func SendPost(content map[string]string, port, router string) error {
+	data, _ := json.Marshal(content)
 	resp, err := http.Post(
 		"http://127.0.0.1:"+port+router,
 		"text/log",
-		strings.NewReader(content),
+		strings.NewReader(string(data)),
 	)
 	if err != nil {
 		fmt.Println("http.Post error: ", err)
@@ -34,5 +37,8 @@ func SendPost(content, port, router string) error {
 }
 
 func main() {
-	SendPost("12345", "80", LogRouter)
+	SendPost(map[string]string{
+		"servicename": "MyNewService",
+		"serviceurl":  "127.0.0.1:4000/log",
+	}, "3000", RegistryRouter)
 }

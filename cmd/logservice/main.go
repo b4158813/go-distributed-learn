@@ -2,19 +2,23 @@ package main
 
 import (
 	"context"
+	"fmt"
 	stlog "log"
 	"projects/log"
+	"projects/registry"
 	"projects/service"
 )
 
 func main() {
 	log.Run("./distributed.log")
-	host, port := "123.60.70.187", "4000"
 	ctx, err := service.Start(
 		context.Background(),
-		"Log service",
-		host,
-		port,
+		log.ServerHost,
+		log.ServerPort,
+		registry.Registration{
+			ServiceName: "log service",
+			ServiceUrl:  fmt.Sprintf("http://%s%s", log.ServerHost, log.ServerPort),
+		},
 		log.RegisterHttpHandler,
 	)
 	if err != nil {

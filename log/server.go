@@ -25,7 +25,7 @@ func Run(dest string) {
 }
 
 func RegisterHttpHandler() {
-	http.HandleFunc("/log", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc(ServerRouter, func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodPost:
 			msg, err := io.ReadAll(r.Body)

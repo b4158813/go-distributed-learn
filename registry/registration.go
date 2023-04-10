@@ -1,8 +1,8 @@
 package registry
 
-type ServiceRegistrationSt struct {
-	ServiceName string
-	ServiceUrl  string
+type Registration struct {
+	ServiceName string `json:"servicename"`
+	ServiceUrl  string `json:"serviceurl"`
 }
 
 const (
